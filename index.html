@@ -2,16 +2,33 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>My Proxy Dashboard</title>
+    <title>Live Data Dashboard</title>
     <style>
-        body { font-family: sans-serif; max-width: 600px; margin: 50px auto; padding: 20px; line-height: 1.6; }
-        h1 { color: #333; }
-        .btn { display: inline-block; background: #0070f3; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; }
+        body { font-family: sans-serif; max-width: 600px; margin: 40px auto; padding: 20px; }
+        .post { background: #f4f4f4; padding: 15px; margin-bottom: 10px; border-left: 5px solid #0070f3; border-radius: 4px; }
+        h3 { margin-top: 0; text-transform: capitalize; }
     </style>
 </head>
 <body>
-    <h1>Proxy Connection Successful!</h1>
-    <p>Your Vercel project is live. Click the button below to view the live backend database stream through your new edge network proxy rewrite root.</p>
-    <a class="btn" href="/api/posts">View Proxied Data</a>
+    <h1>Latest Backend Posts</h1>
+    <div id="data-container">Loading live proxy stream...</div>
+
+    <script>
+        // Fetches data from your proxy route smoothly
+        fetch('/api/posts?_limit=3')
+            .then(res => res.json())
+            .then(data => {
+                const container = document.getElementById('data-container');
+                container.innerHTML = data.map(post => `
+                    <div class="post">
+                        <h3>${post.title}</h3>
+                        <p>${post.body}</p>
+                    </div>
+                `).join('');
+            })
+            .catch(() => {
+                document.getElementById('data-container').innerText = 'Failed to load data.';
+            });
+    </script>
 </body>
 </html>
