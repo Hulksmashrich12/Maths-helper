@@ -2,33 +2,36 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Live Data Dashboard</title>
+    <title>Network Test Dashboard</title>
     <style>
-        body { font-family: sans-serif; max-width: 600px; margin: 40px auto; padding: 20px; }
-        .post { background: #f4f4f4; padding: 15px; margin-bottom: 10px; border-left: 5px solid #0070f3; border-radius: 4px; }
-        h3 { margin-top: 0; text-transform: capitalize; }
+        body { font-family: sans-serif; max-width: 500px; margin: 50px auto; text-align: center; }
+        #box { background: #f0f0f0; padding: 20px; border-radius: 8px; margin-top: 20px; word-break: break-all; }
     </style>
 </head>
 <body>
-    <h1>Latest Backend Posts</h1>
-    <div id="data-container">Loading live proxy stream...</div>
+    <h2>Vercel Edge Proxy Test</h2>
+    <button onclick="checkProxy()">Pull Live Stream</button>
+    <div id="box">Click the button to test connection.</div>
 
     <script>
-        // Fetches data from your proxy route smoothly
-        fetch('/api/posts?_limit=3')
-            .then(res => res.json())
-            .then(data => {
-                const container = document.getElementById('data-container');
-                container.innerHTML = data.map(post => `
-                    <div class="post">
-                        <h3>${post.title}</h3>
-                        <p>${post.body}</p>
-                    </div>
-                `).join('');
-            })
-            .catch(() => {
-                document.getElementById('data-container').innerText = 'Failed to load data.';
-            });
+        function checkProxy() {
+            const box = document.getElementById('box');
+            box.innerText = "Connecting to Edge...";
+
+            fetch('/api/posts?_limit=1')
+                .then(res => {
+                    if (!res.ok) throw new Error('Status: ' + res.status);
+                    return res.json();
+                })
+                .then(data => {
+                    box.innerText = "Success! Received data: " + JSON.stringify(data[0]);
+                    box.style.color = "green";
+                })
+                .catch(err => {
+                    box.innerText = "Network Error: " + err.message + " (Check Vercel deployment logs for exact network failure context)";
+                    box.style.color = "red";
+                });
+        }
     </script>
 </body>
 </html>
