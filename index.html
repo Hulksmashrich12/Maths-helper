@@ -29,26 +29,37 @@
 
 <script>
     function fetchLatestData() {
-        fetch('/api/posts')
-            .then(res => res.json())
-            .then(data => {
-                // Safeguard: Check if the response is an array and has at least one item
-                if (!Array.isArray(data) || data.length === 0) {
-                    alert('Connected to Supabase successfully, but your database table is currently empty! Please add a row in your Supabase Table Editor.');
-                    return;
-                }
-                
-                // Selects the first item from the array response safely
-                const post = data[0]; 
-                
-                // Populates our dashboard elements
-                document.getElementById('title').innerText = post.title || 'Untitled Column';
-                document.getElementById('body').innerText = post.body || 'No description body found.';
-                
-                // Makes the card container visible
-                document.getElementById('card').style.display = 'block';
-            })
-            .catch(err => alert('Streaming error: ' + err.message));
+        // paste your long Supabase eyJ... anon key inside these quotes below:
+        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVxdmFkZXJqamZpYmphZ2VpaXVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI4MDM2NTMsImV4cCI6MjA5ODM3OTY1M30.uY1PL6ZhNDneKvTknSRwnAMVI9khzHRS14CbJlISd6w";
+
+        fetch('/api/posts', {
+            method: 'GET',
+            headers: {
+                'apikey': SUPABASE_ANON_KEY,
+                'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(res => {
+            // If Supabase sends an error webpage, catch it before it crashes JSON parsing
+            if (!res.ok) {
+                throw new Error('Server sent status code ' + res.status);
+            }
+            return res.json();
+        })
+        .then(data => {
+            if (!Array.isArray(data) || data.length === 0) {
+                alert('Connected to Supabase, but your table is empty. Insert a row in Supabase!');
+                return;
+            }
+            
+            const post = data[0]; // Accesses the first database row item safely
+            
+            document.getElementById('title').innerText = post.title || 'Untitled Column';
+            document.getElementById('body').innerText = post.body || 'No description found.';
+            document.getElementById('card').style.display = 'block';
+        })
+        .catch(err => alert('Data Fetch Error: ' + err.message));
     }
 </script>
 
