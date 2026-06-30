@@ -2,36 +2,49 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Network Test Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Production Data Hub</title>
     <style>
-        body { font-family: sans-serif; max-width: 500px; margin: 50px auto; text-align: center; }
-        #box { background: #f0f0f0; padding: 20px; border-radius: 8px; margin-top: 20px; word-break: break-all; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #fafafa; color: #333; margin: 0; padding: 20px; }
+        .container { max-width: 600px; margin: 40px auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        h1 { font-size: 24px; margin-bottom: 20px; color: #111; }
+        button { background: #0070f3; color: white; border: none; padding: 12px 24px; font-size: 16px; border-radius: 6px; cursor: pointer; transition: background 0.2s; }
+        button:hover { background: #0051cb; }
+        .post-card { display: none; margin-top: 25px; padding: 20px; background: #f9fbfd; border-left: 4px solid #0070f3; border-radius: 6px; text-align: left; }
+        .post-title { font-weight: 600; font-size: 18px; margin-bottom: 8px; text-transform: capitalize; color: #0070f3; }
+        .post-body { color: #666; line-height: 1.5; margin: 0; }
     </style>
 </head>
 <body>
-    <h2>Vercel Edge Proxy Test</h2>
-    <button onclick="checkProxy()">Pull Live Stream</button>
-    <div id="box">Click the button to test connection.</div>
 
-    <script>
-        function checkProxy() {
-            const box = document.getElementById('box');
-            box.innerText = "Connecting to Edge...";
+<div class="container">
+    <h1>Live Edge Stream Dashboard</h1>
+    <button onclick="fetchLatestData()">Refresh Stream Data</button>
+    
+    <div id="card" class="post-card">
+        <div id="title" class="post-title"></div>
+        <p id="body" class="post-body"></p>
+    </div>
+</div>
 
-            fetch('/api/posts?_limit=1')
-                .then(res => {
-                    if (!res.ok) throw new Error('Status: ' + res.status);
-                    return res.json();
-                })
-                .then(data => {
-                    box.innerText = "Success! Received data: " + JSON.stringify(data[0]);
-                    box.style.color = "green";
-                })
-                .catch(err => {
-                    box.innerText = "Network Error: " + err.message + " (Check Vercel deployment logs for exact network failure context)";
-                    box.style.color = "red";
-                });
-        }
-    </script>
+<script>
+    function fetchLatestData() {
+        fetch('/api/posts')
+            .then(res => res.json())
+            .then(data => {
+                // Selects the first item from the array response
+                const post = data[0]; 
+                
+                // Populates our dashboard elements
+                document.getElementById('title').innerText = post.title;
+                document.getElementById('body').innerText = post.body;
+                
+                // Makes the card container visible
+                document.getElementById('card').style.display = 'block';
+            })
+            .catch(err => alert('Streaming error: ' + err.message));
+    }
+</script>
+
 </body>
 </html>
