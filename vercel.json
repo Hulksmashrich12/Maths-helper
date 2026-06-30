@@ -3,23 +3,7 @@
   "rewrites": [
     {
       "source": "/api/posts",
-      "destination": "https://supabase.co",
-      "has": []
-    }
-  ],
-  "headers": [
-    {
-      "source": "/api/posts",
-      "headers": [
-        {
-          "key": "apikey",
-          "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVxdmFkZXJqamZpYmphZ2VpaXVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI4MDM2NTMsImV4cCI6MjA5ODM3OTY1M30.uY1PL6ZhNDneKvTknSRwnAMVI9khzHRS14CbJlISd6w"
-        },
-        {
-          "key": "Authorization",
-          "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVxdmFkZXJqamZpYmphZ2VpaXVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI4MDM2NTMsImV4cCI6MjA5ODM3OTY1M30.uY1PL6ZhNDneKvTknSRwnAMVI9khzHRS14CbJlISd6w"
-        }
-      ]
+      "destination": "https://supabase.co"
     }
   ]
 }
