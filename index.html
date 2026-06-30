@@ -29,10 +29,13 @@
 
 <script>
     function fetchLatestData() {
-        // paste your long Supabase eyJ... anon key inside these quotes below:
+        // Paste your long Supabase eyJ... anon key inside these quotes:
         const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVxdmFkZXJqamZpYmphZ2VpaXVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI4MDM2NTMsImV4cCI6MjA5ODM3OTY1M30.uY1PL6ZhNDneKvTknSRwnAMVI9khzHRS14CbJlISd6w";
+        
+        // This connects directly to your live database node URL bypasses local file caches
+        const DIRECT_URL = "https://supabase.co";
 
-        fetch('/api/posts', {
+        fetch(DIRECT_URL, {
             method: 'GET',
             headers: {
                 'apikey': SUPABASE_ANON_KEY,
@@ -41,7 +44,6 @@
             }
         })
         .then(res => {
-            // If Supabase sends an error webpage, catch it before it crashes JSON parsing
             if (!res.ok) {
                 throw new Error('Server sent status code ' + res.status);
             }
@@ -49,11 +51,11 @@
         })
         .then(data => {
             if (!Array.isArray(data) || data.length === 0) {
-                alert('Connected to Supabase, but your table is empty. Insert a row in Supabase!');
+                alert('Connected to Supabase, but your table is empty. Please verify you inserted a row into your spreadsheet!');
                 return;
             }
             
-            const post = data[0]; // Accesses the first database row item safely
+            const post = data[0]; // Safely grabs your top row element entry
             
             document.getElementById('title').innerText = post.title || 'Untitled Column';
             document.getElementById('body').innerText = post.body || 'No description found.';
