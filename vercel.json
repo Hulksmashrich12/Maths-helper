@@ -3,7 +3,7 @@
   "rewrites": [
     {
       "source": "/api/posts",
-      "destination": "https://jsonplaceholder.typicode.com/posts"
+      "destination": "https://uqvaderjjfibjageiiur.supabase.co"
     }
   ]
 }
