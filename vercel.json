@@ -2,8 +2,8 @@
   "version": 2,
   "rewrites": [
     {
-      "source": "/api/:path*",
-      "destination": "https://typicode.com*"
+      "source": "/api/posts",
+      "destination": "https://jsonplaceholder.typicode.com/posts"
     }
   ]
 }
